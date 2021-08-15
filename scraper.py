@@ -1,25 +1,36 @@
 import asyncio
 from pyppeteer import launch
+
 import re
-import collections
 import json
 
-async def getLenovoLinks():
-    """
-    Gets the lenovo links from webscraper.io.
+import time
 
+async def getLenovoLinks(url, debug = False):
+    """
+    Gets the lenovo links from given url.
+    
+    :param      url:    The page url
+    :type       url:    String
+    :param      debug:  Control to show or not progress comments
+    :type       debug:  bool
+    
     :returns:   The lenovo links.
-    :rtype:     { Dict }
+    :rtype:     Dict
     """
     browser = await launch()
     page    = await browser.newPage()
-    # print('Loading the page')
-    await page.goto('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
+    if debug:
+        print(f'Connecting to {url}')
+    await page.goto(url)
     pageContent = await page.content() #get page content
-    # print('getting page links')
+    if debug:
+        print('Getting all page <a> tags')
     aTags = re.findall(r"<a(.*)>.*?|<(.*) /a>",pageContent) #regex getting all "<a>" html tags
     laptops = {}
     # getting lenovo links
+    if debug:
+        print('Getting all Lenovo links and titles')
     for link in aTags:
         if re.search('Lenovo', link[0], re.IGNORECASE):
             title = (re.search(r"title=([\"'])(?:(?=(\\?))\2.)*?\1",link[0]).group())[7:-1] #get link title
@@ -28,21 +39,25 @@ async def getLenovoLinks():
     await browser.close()
     return laptops
 
-async def getLaptopsData(laptopsLink):
+async def getLaptopsData(laptopsLink, debug = False):
     """
     Gets data from all given laptop links.
-
+    
     :param      laptopsLink:  The laptop links
-    :type       laptopsLink:  { Dict }
-
+    :type       laptopsLink:  Dict
+    :param      debug:        Control to show or not progress comments
+    :type       debug:        bool
+    
     :returns:   The laptops data.
-    :rtype:     { Dict }
+    :rtype:     Dict
     """
     leptopsWithData = {}
     browser = await launch()
     for title in laptopsLink:
         link    = laptopsLink[title]
         page    = await browser.newPage()
+        if debug:
+            print(f'Getting "{title}" data.')
         await page.goto(link)
         pageContent = await page.content() #get page content
         description = (re.search(r"<p class=\"description\"(.*)>.*?|<(.*) /p>",pageContent).group())[23:-4]
@@ -63,26 +78,51 @@ async def getLaptopsData(laptopsLink):
     await browser.close()
     return leptopsWithData
 
-def orderLaptops(laptops):
+def orderLaptops(laptops, debug = False):
     """
-    { Sort a given laptop dictionary }
-
+    Sort a given laptop dictionary
+    
     :param      laptops:  The laptops dictionary
-    :type       laptops:  { Dict }
-
-    :returns:   { Sorted laptops dictionary }
-    :rtype:     { Dict }
+    :type       laptops:  Dict
+    :param      debug:    Control to show or not progress comments
+    :type       debug:    bool
+    
+    :returns:   Sorted laptops dictionary
+    :rtype:     Dict
     """
     newDict = {}
+    if debug:
+        print('Starting sorting')
     for key in sorted(laptops, key = lambda x: float(x)):
         newDict[str(key)] = laptops[str(key)]
+    if debug:
+        print('Sorting done!')
     return newDict
 
+def getLenovoLaptopsJson(debug = False):
+    """
+    Gets all lenovo laptops sorted by price (low priced to higth priced) and its
+    data in a json.
+    
+    :param      debug:  Control to show or not progress comments
+    :type       debug:  bool
+    
+    :returns:   The lenovo laptops json.
+    :rtype:     String
+    """
+    if debug:
+        start = time.time()
+    laptops = asyncio.get_event_loop().run_until_complete(getLenovoLinks('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops', debug))
+    laptops = asyncio.get_event_loop().run_until_complete(getLaptopsData(laptops, debug))
+    laptops = orderLaptops(laptops, debug)
+    json_object = json.dumps(laptops, indent = 4)
+    if debug:
+        end = time.time()
+        print(f'Run time is: {end-start}')
+    return json_object
+
 def main():
-    laptops = asyncio.get_event_loop().run_until_complete(getLenovoLinks())
-    laptops = asyncio.get_event_loop().run_until_complete(getLaptopsData(laptops))
-    laptops = orderLaptops(laptops)
-    json_object = json.dumps(laptops, indent = 4) 
+    json_object = getLenovoLaptopsJson()
     print(json_object)
 
 
