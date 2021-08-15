@@ -12,11 +12,11 @@ async def getLenovoLinks(url, debug = False):
     
     :param      url:    The page url
     :type       url:    String
-    :param      debug:  Control to show or not progress comments
+    :param      debug:  Control variable to show or not progress comments
     :type       debug:  bool
     
     :returns:   The lenovo links.
-    :rtype:     Dict
+    :return type:     Dict
     """
     browser = await launch()
     page    = await browser.newPage()
@@ -45,11 +45,11 @@ async def getLaptopsData(laptopsLink, debug = False):
     
     :param      laptopsLink:  The laptop links
     :type       laptopsLink:  Dict
-    :param      debug:        Control to show or not progress comments
+    :param      debug:        Control variable to show or not progress comments
     :type       debug:        bool
     
     :returns:   The laptops data.
-    :rtype:     Dict
+    :return type:     Dict
     """
     leptopsWithData = {}
     browser = await launch()
@@ -84,11 +84,11 @@ def orderLaptops(laptops, debug = False):
     
     :param      laptops:  The laptops dictionary
     :type       laptops:  Dict
-    :param      debug:    Control to show or not progress comments
+    :param      debug:    Control variable to show or not progress comments
     :type       debug:    bool
     
     :returns:   Sorted laptops dictionary
-    :rtype:     Dict
+    :return type:     Dict
     """
     newDict = {}
     if debug:
@@ -101,16 +101,15 @@ def orderLaptops(laptops, debug = False):
 
 def getLenovoLaptopsJson(url, debug = False):
     """
-    Gets all lenovo laptops sorted by price (low priced to higth priced) and its
-    data in a json.
+    Gets all lenovo laptops from given link, sort it by price (low priced to high priced) and gets all of its data
     
     :param      url:    The page url
     :type       url:    String
-    :param      debug:  Control to show or not progress comments
+    :param      debug:  Control variable to show or not progress comments
     :type       debug:  bool
     
     :returns:   The lenovo laptops json.
-    :rtype:     String
+    :return type:     String
     """
     if debug:
         start = time.time()
