@@ -99,11 +99,13 @@ def orderLaptops(laptops, debug = False):
         print('Sorting done!')
     return newDict
 
-def getLenovoLaptopsJson(debug = False):
+def getLenovoLaptopsJson(url, debug = False):
     """
     Gets all lenovo laptops sorted by price (low priced to higth priced) and its
     data in a json.
     
+    :param      url:    The page url
+    :type       url:    String
     :param      debug:  Control to show or not progress comments
     :type       debug:  bool
     
@@ -112,7 +114,7 @@ def getLenovoLaptopsJson(debug = False):
     """
     if debug:
         start = time.time()
-    laptops = asyncio.get_event_loop().run_until_complete(getLenovoLinks('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops', debug))
+    laptops = asyncio.get_event_loop().run_until_complete(getLenovoLinks(url, debug))
     laptops = asyncio.get_event_loop().run_until_complete(getLaptopsData(laptops, debug))
     laptops = orderLaptops(laptops, debug)
     json_object = json.dumps(laptops, indent = 4)
@@ -122,7 +124,7 @@ def getLenovoLaptopsJson(debug = False):
     return json_object
 
 def main():
-    json_object = getLenovoLaptopsJson()
+    json_object = getLenovoLaptopsJson('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
     print(json_object)
 
 
