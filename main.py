@@ -22,20 +22,24 @@ async def getLenovoLinks(url, debug = False):
     page    = await browser.newPage()
     if debug:
         print(f'Connecting to {url}')
+
     await page.goto(url)
     pageContent = await page.content() #get page content
     if debug:
         print('Getting all page <a> tags')
+
     aTags = re.findall(r"<a(.*)>.*?|<(.*) /a>",pageContent) #regex getting all "<a>" html tags
     laptops = {}
     # getting lenovo links
     if debug:
         print('Getting all Lenovo links and titles')
+
     for link in aTags:
         if re.search('Lenovo', link[0], re.IGNORECASE):
             title = (re.search(r"title=([\"'])(?:(?=(\\?))\2.)*?\1",link[0]).group())[7:-1] #get link title
             href  = "https://webscraper.io" + (re.search(r"href=([\"'])(?:(?=(\\?))\2.)*?\1",link[0]).group())[6:-1] #get link url
             laptops[title] = href
+
     await browser.close()
     return laptops
 
@@ -58,6 +62,7 @@ async def getLaptopsData(laptopsLink, debug = False):
         page    = await browser.newPage()
         if debug:
             print(f'Getting "{title}" data.')
+
         await page.goto(link)
         pageContent = await page.content() #get page content
         description = (re.search(r"<p class=\"description\"(.*)>.*?|<(.*) /p>",pageContent).group())[23:-4]
@@ -93,10 +98,13 @@ def orderLaptops(laptops, debug = False):
     newDict = {}
     if debug:
         print('Starting sorting')
+
     for key in sorted(laptops, key = lambda x: float(x)):
         newDict[str(key)] = laptops[str(key)]
+
     if debug:
         print('Sorting done!')
+
     return newDict
 
 def getLenovoLaptopsJson(url, debug = False):
@@ -113,18 +121,20 @@ def getLenovoLaptopsJson(url, debug = False):
     """
     if debug:
         start = time.time()
+
     laptops = asyncio.get_event_loop().run_until_complete(getLenovoLinks(url, debug))
     laptops = asyncio.get_event_loop().run_until_complete(getLaptopsData(laptops, debug))
     laptops = orderLaptops(laptops, debug)
     json_object = json.dumps(laptops, indent = 4)
+    
     if debug:
         end = time.time()
         print(f'Run time is: {end-start}')
+
     return json_object
 
 def main():
     json_object = getLenovoLaptopsJson('https://webscraper.io/test-sites/e-commerce/allinone/computers/laptops')
     print(json_object)
-
 
 main()
