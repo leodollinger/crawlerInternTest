@@ -47,20 +47,17 @@ It is necessary to create a new virtual env and then, install the listed librari
 * Secund:    
 
     Go to "\venv\Lib\site-packages\flask_restplus\api.py" and change the line 19
-    From
-        "from flask.helpers import _endpoint_from_view_func"
-    To
-        "import flask.scaffold
-        flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"
-''
-    And change the line 25
-    From
-        "from werkzeug import cached_property"
-    To
-        "from werkzeug.utils import cached_property"
+    From  
+        "from flask.helpers import _endpoint_from_view_func"  
+    To  
+        "import flask.scaffold  
+        flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"    
+    And change the line 25  
+    From  
+        "from werkzeug import cached_property"  
+    To  
+        "from werkzeug.utils import cached_property"    
 
 ### Run the app
-
 Now, to run the app, go to the app root directory and execute the "main.py" file (py .\main.py).
-
 Once the program is running, the user can access the page "http://127.0.0.1:5000/laptops". After a couple secunds, the page will bring a json contenning all Lenovo laptops data.
