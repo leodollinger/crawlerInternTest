@@ -52,7 +52,6 @@ It is necessary to create a new virtual env and then, install the listed librari
     To<br>
         "import flask.scaffold<br>
         flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"<br>
-<br>
     And change the line 25<br>
     From<br>
         "from werkzeug import cached_property"<br>
