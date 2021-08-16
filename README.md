@@ -38,26 +38,29 @@ It is necessary to create a new virtual env and then, install the listed librari
 
 * First:
 
-    Go to "\venv\Lib\site-packages\flask_restplus\fields.py" and change the line 17 
-    From
-        "from werkzeug import cached_property"
-    To
-        "from werkzeug.utils import cached_property"
+    Go to "\venv\Lib\site-packages\flask_restplus\fields.py" and change the line 17 <br>
+    From<br>
+        "from werkzeug import cached_property"<br>
+    To<br>
+        "from werkzeug.utils import cached_property"<br>
 
 * Secund:    
 
-    Go to "\venv\Lib\site-packages\flask_restplus\api.py" and change the line 19
-    From  
-        "from flask.helpers import _endpoint_from_view_func"  
-    To  
-        "import flask.scaffold  
-        flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"    
-    And change the line 25  
-    From  
-        "from werkzeug import cached_property"  
-    To  
-        "from werkzeug.utils import cached_property"    
-
+    Go to "\venv\Lib\site-packages\flask_restplus\api.py" and change the line 19<br>
+    From<br>
+        "from flask.helpers import _endpoint_from_view_func"<br>
+    To<br>
+        "import flask.scaffold<br>
+        flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"<br>
+<br>
+    And change the line 25<br>
+    From<br>
+        "from werkzeug import cached_property"<br>
+    To<br>
+        "from werkzeug.utils import cached_property"<br>
+<br>
 ### Run the app
+<br>
 Now, to run the app, go to the app root directory and execute the "main.py" file (py .\main.py).
+<br>
 Once the program is running, the user can access the page "http://127.0.0.1:5000/laptops". After a couple secunds, the page will bring a json contenning all Lenovo laptops data.
