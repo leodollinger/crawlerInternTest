@@ -58,6 +58,7 @@ It is necessary to create a new virtual env and then, install the listed librari
     To<br>
         "from werkzeug.utils import cached_property"<br>
 <br>
+
 ### Run the app
 <br>
 Now, to run the app, go to the app root directory and execute the "main.py" file (py .\main.py).
