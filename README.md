@@ -38,7 +38,7 @@ It is necessary to create a new virtual env and then, install the listed librari
 
 * First:
 
-    Go to "\venv\Lib\site-packages\flask_restplus\fields.py" and change the line 17 <br>
+    **Go to "\venv\Lib\site-packages\flask_restplus\fields.py" and change the line 17 <br>**
     From<br>
         "from werkzeug import cached_property"<br>
     To<br>
@@ -46,13 +46,13 @@ It is necessary to create a new virtual env and then, install the listed librari
 
 * Secund:    
 
-    Go to "\venv\Lib\site-packages\flask_restplus\api.py" and change the line 19<br>
+    **Go to "\venv\Lib\site-packages\flask_restplus\api.py" and change the line 19<br>**
     From<br>
         "from flask.helpers import _endpoint_from_view_func"<br>
     To<br>
         "import flask.scaffold<br>
         flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func"<br>
-    And change the line 25<br>
+    **And change the line 25<br>**
     From<br>
         "from werkzeug import cached_property"<br>
     To<br>
